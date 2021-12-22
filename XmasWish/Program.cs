@@ -1,2 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using XmasWish.Utils;
+
+Menu menu = new(); // instansierar menyn
+menu.mainMenu(); // kör mainmenu 
