@@ -1,4 +1,5 @@
 ﻿using XmasWish.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace XmasWish.Utils
 {
@@ -33,20 +34,20 @@ namespace XmasWish.Utils
                 Console.ReadKey();
             }
         }
-        public void ReadGifts() // listar alla förnamn, efternamn samt Id
+        public void ReadGifts() 
         {
             using (var read = new Database())
             {
                 var list = read.Gifts.OrderByDescending(p => p.GiftId);
                 foreach (var n in list)
                 {
-                    Console.WriteLine(" - " + n.GiftName + " " + n.Store + " " + n.Price);
+                    Console.WriteLine(" - " + n.GiftName + " - " + n.Store + " - " + n.Price);
                 }
             }
             Console.ReadKey();
         }
 
-        public void UpdateGift() //uppdaterar vald person, alla properties
+        public void UpdateGift() 
         {
             using (var update = new Database())
             {
@@ -78,7 +79,7 @@ namespace XmasWish.Utils
             }
             Console.ReadKey();
         }
-        public void DeleteGift() // söker via förnamn, ta bort från tabellen
+        public void DeleteGift()
         {
             using (var delete = new Database())
             {
@@ -96,7 +97,48 @@ namespace XmasWish.Utils
             }
             Console.ReadKey();
         }
+
+        public void AssignGift()
+        {
+            Console.WriteLine("Input firstname of the person who should get a gift:");
+            var inputPersonName = Console.ReadLine();
+
+            Console.WriteLine("Input giftname:");
+            var inputGiftName = Console.ReadLine();
+
+            using (var assign = new Database())
+            {
+                var person = assign.People.Include("Gifts").FirstOrDefault(p => p.FirstName == inputPersonName);
+                if (person.Gifts != null) person.Gifts = new List<Gift>();
+
+                var gift = assign.Gifts.FirstOrDefault(g => g.GiftName == inputGiftName);
+                if (gift != null) person.Gifts.Add(gift);
+
+                assign.Update(person);
+                assign.SaveChanges();
+            }
+            Console.ReadKey();
+        }
+
+        public void ReadGiftsOfPerson()
+        {
+            Console.WriteLine("Input firstname of the person whom´s gifts you want to see:");
+            var inputPersonName = Console.ReadLine();
+            
+            using (var db = new Database())
+            {
+                var person = db.People.Include("Gifts").FirstOrDefault(p => p.FirstName == inputPersonName);
+                if (person != null && person.Gifts != null)
+                {
+                    foreach (var gift in person.Gifts)
+                    {
+                        Console.WriteLine(" - " + gift.GiftName);
+                    }
+                }
+            }
+            Console.ReadKey();
+        }
     }
 }
-    
+
 

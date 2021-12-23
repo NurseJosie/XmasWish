@@ -12,6 +12,6 @@ namespace XmasWish.Models
         public string LastName { get; set; }
         [MaxLength(100)]
         public string RelationToUser { get; set; }
-        public List<Gift> Gifts { get; set; } 
+        public List<Gift> Gifts { get; set; }
     }
 }

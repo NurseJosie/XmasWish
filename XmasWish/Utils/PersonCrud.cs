@@ -1,4 +1,5 @@
-﻿using XmasWish.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using XmasWish.Models;
 
 namespace XmasWish.Utils
 {
@@ -31,20 +32,20 @@ namespace XmasWish.Utils
                 Console.ReadKey();
             }
         }
-        public void ReadPerson() // listar alla förnamn, efternamn samt Id
+        public void ReadPerson() 
         {
             using (var read = new Database())
             {
                 var list = read.People.OrderByDescending(p => p.PersonId);
                 foreach (var n in list)
                 {
-                    Console.WriteLine(" - " + n.FirstName + " " + n.LastName + " " + n.RelationToUser);
+                    Console.WriteLine(" - " + n.FirstName + " " + n.LastName + " - " + n.RelationToUser);
                 }
             }
             Console.ReadKey();
         }
 
-        public void UpdatePerson() //uppdaterar vald person, alla properties
+        public void UpdatePerson() 
         {
             using (var update = new Database())
             {
@@ -74,7 +75,7 @@ namespace XmasWish.Utils
             }
             Console.ReadKey();
         }
-        public void DeletePerson() // söker via förnamn, ta bort från tabellen
+        public void DeletePerson()
         {
             using (var delete = new Database())
             {
@@ -92,23 +93,11 @@ namespace XmasWish.Utils
             }
             Console.ReadKey();
         }
-        public void ShowAll() 
-        {
-            using (var showAll = new Database())
-            {
-                var list = showAll.People.OrderByDescending(p => p.PersonId);
-                foreach (var n in list)
-                {
-                    Console.WriteLine(" - " + n.FirstName + " " + n.LastName + " " + n.RelationToUser + " " + n.Gifts);
-                }
-            }
-            Console.ReadKey();
-        }
     }
 }
 
 
-    
+
 
 
 
