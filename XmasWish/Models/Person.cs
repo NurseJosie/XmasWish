@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace XmasWish.Models
 {
     public class Person
     {
         [Key]
-        public int Id { get; set; }
-        public string PersonName { get; set; }
-        public string RelationshipToMe { get; set; }
-        //public List<Gift> XmasWish { get; set; } // FK
-        //public List<AlreadyGifted> AlreadyGifted { get; set;} // FK
+        public int PersonId { get; set; }
+        [MaxLength(50)]  // sparar minne
+        public string FirstName { get; set; }
+        [MaxLength(50)]  // sparar minne
+        public string LastName { get; set; }
+        [MaxLength(100)]
+        public string RelationToUser { get; set; }
+        public List<Gift> Gifts { get; set; } 
     }
 }

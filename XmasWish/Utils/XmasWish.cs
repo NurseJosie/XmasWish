@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using XmasWish.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace XmasWish.Utils
 {
@@ -14,55 +11,32 @@ namespace XmasWish.Utils
             {
                 int rowsPeople =checker.People.Count();
                 int rowsGifts = checker.Gifts.Count();
-                int rowsAlreadyGifted = checker.AlreadyGifted.Count();
 
-                if(rowsPeople == 0 && rowsGifts == 0 && rowsAlreadyGifted == 0)
+                if(rowsGifts == 0 && rowsPeople == 0)
                 {
                     using (var db = new Database())
                     {
                         db.People.Add(new Models.Person
                         {
-                           PersonName = "Kalle Anka",
-                           RelationshipToMe = "Farbror"
-                           // FK
-                           //FK
-                         });
-                        db.SaveChanges();
-
+                            FirstName = "Kalle",
+                            LastName = "Anka",
+                            RelationToUser = "Farbror"
+                        });
                         db.Gifts.Add(new Models.Gift
                         {
-                            GiftName =  "Halsduk i Kashmir",
-                            Store = "Åhléns",
-                            Price = 799
-                            // given to person-id
-                            // FK already gifted: lista alla person ID(namn) som den är given till
+                            GiftName = "Blanket",
+                            Store = "NK",
+                            Price = 1000
                         });
                         db.SaveChanges();
 
-                        db.Gifts.Add(new Models.Gift
-                        {
-                            GiftName = "Röd handväska",
-                            Store = "H&M",
-                            Price = 399
-                            // given to person-id
-                            // FK already gifted: lista alla person ID(namn) som den är given till
-                        });
-                        db.SaveChanges();
+                        var kalle = db.People.Include("Gifts").FirstOrDefault(p => p.FirstName == "Kalle");
+                        if (kalle.Gifts != null) kalle.Gifts = new List<Gift>();
 
-                        db.Gifts.Add(new Models.Gift
-                        {
-                            GiftName = "Trisslott",
-                            Store = "Pressbyrån",
-                            Price = 30
-                            // given to person-id
-                            // FK already gifted: lista alla person ID(namn) som den är given till
-                        });
-                        db.SaveChanges();
+                        var gift = db.Gifts.FirstOrDefault(g => g.GiftName == "Blanket");
+                        if (gift != null)   kalle.Gifts.Add(gift);
 
-                        db.AlreadyGifted.Add(new Models.AlreadyGifted
-                        {
-                            //FK      // lista alla klappar som personen fått, HUR? checka av att den är given och kom ihåg!
-                        });
+                        db.Update(kalle);
                         db.SaveChanges();
                     }
                 }

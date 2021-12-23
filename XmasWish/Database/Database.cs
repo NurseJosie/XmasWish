@@ -10,7 +10,6 @@ namespace XmasWish
             
         public DbSet<Person> People { get; set; }
         public DbSet<Gift> Gifts { get; set; }
-        public DbSet<AlreadyGifted> AlreadyGifted { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(ConnString);
